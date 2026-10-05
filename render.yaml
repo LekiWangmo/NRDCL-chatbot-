@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: nrdcl-chatbot
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.lock.txt
+    startCommand: python -m uvicorn app:app --host 0.0.0.0 --port $PORT --workers 1
+    healthCheckPath: /healthz
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: INDEX_PATH
+        value: knowledge/index.json
+      - key: CHAT_MODEL
+        value: llama3.2:latest
+      - key: EMBED_MODEL
+        value: nomic-embed-text
+      - key: OLLAMA_URL
+        sync: false
+      - key: OLLAMA_API_KEY
+        sync: false
+      - key: MODEL_TIMEOUT
+        value: '120'
+      - key: CHAT_REQUESTS_PER_MINUTE
+        value: '10'
